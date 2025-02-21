@@ -4,7 +4,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import type { Id } from "@/convex/_generated/dataModel"
 
-interface CartItem {
+export interface CartItem {
   _id: Id<"cakes">
   name: string
   price: number
@@ -14,7 +14,7 @@ interface CartItem {
 
 interface CartStore {
   items: CartItem[]
-  addItem: (cake: Omit<CartItem, "quantity">) => void
+  addItem: (cake: Omit<CartItem, "quantity"> & { quantity?: number }) => void
   removeItem: (id: Id<"cakes">) => void
   updateQuantity: (id: Id<"cakes">, quantity: number) => void
   clearCart: () => void
@@ -34,7 +34,7 @@ export const useCartStore = create<CartStore>()(
               ),
             }
           }
-          return { items: [...state.items, { ...cake, quantity: 1 }] }
+          return { items: [...state.items, { ...cake, quantity: cake.quantity ?? 1 }] }
         }),
       removeItem: (id) =>
         set((state) => ({
