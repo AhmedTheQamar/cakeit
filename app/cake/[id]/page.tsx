@@ -4,13 +4,14 @@ import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { AddToCartButton } from "@/components/add-to-cart-button"
 import { Button } from "@/components/ui/button"
-import { ArrowLeftIcon } from "lucide-react"
+import { ArrowRightIcon } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Toaster } from "sonner"
 import type { Id } from "@/convex/_generated/dataModel"
+import { use } from "react"
 
-// Add type for the cake data
 interface Cake {
   _id: Id<"cakes">
   name: string
@@ -20,13 +21,25 @@ interface Cake {
   image?: string
 }
 
-export default function CakePage({ params }: { params: { id: string } }) {
-  // Use the getCakeById query to fetch the cake by ID
+interface PageProps {
+  params: Promise<{ id: string }>
+}
+
+export default function CakePage({ params }: PageProps) {
+  const { id } = use(params)
+
   const cake = useQuery(api.cake.getCakeById, {
-    id: params.id as Id<"cakes">,
+    id: id as Id<"cakes">,
   })
 
-  // Handle loading state
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("ar-IQ", {
+      style: "currency",
+      currency: "IQD",
+      maximumFractionDigits: 0,
+    }).format(price)
+  }
+
   if (cake === undefined) {
     return (
       <div className="min-h-screen bg-background">
@@ -34,10 +47,10 @@ export default function CakePage({ params }: { params: { id: string } }) {
           <div className="container flex h-14 items-center gap-4">
             <Link href="/">
               <Button variant="ghost" size="icon">
-                <ArrowLeftIcon className="h-5 w-5" />
+                <ArrowRightIcon className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="font-semibold">Loading...</h1>
+            <h1 className="font-semibold">جاري التحميل...</h1>
           </div>
         </header>
         <div className="container py-6">
@@ -54,22 +67,21 @@ export default function CakePage({ params }: { params: { id: string } }) {
     )
   }
 
-  // Handle not found state
   if (cake === null) {
     notFound()
   }
 
   return (
     <div className="min-h-screen bg-background pb-16">
-      <Toaster />
+      <Toaster position="bottom-left" />
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center gap-4">
           <Link href="/">
             <Button variant="ghost" size="icon">
-              <ArrowLeftIcon className="h-5 w-5" />
+              <ArrowRightIcon className="h-5 w-5" />
             </Button>
           </Link>
-          <h1 className="font-semibold">Cake Details</h1>
+          <h1 className="font-semibold">تفاصيل الكيك</h1>
         </div>
       </header>
 
@@ -77,11 +89,18 @@ export default function CakePage({ params }: { params: { id: string } }) {
         <div className="grid gap-6 md:grid-cols-2">
           {/* Image Section */}
           <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
-            <img src={cake.image || "/placeholder.svg"} alt={cake.name} className="object-cover w-full h-full" />
+            <Image
+              src={cake.image || "/placeholder.svg"}
+              alt={cake.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
           </div>
 
           {/* Details Section */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-right">
             <div>
               <h1 className="text-2xl font-bold text-primary mb-1">{cake.name}</h1>
               <div className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary/10 text-primary">
@@ -89,18 +108,14 @@ export default function CakePage({ params }: { params: { id: string } }) {
               </div>
             </div>
 
-            <p className="text-2xl font-bold text-secondary">${cake.price.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-secondary arabic-digits">{formatPrice(cake.price)}</p>
 
             <div className="space-y-2">
-              <h2 className="font-semibold">Description</h2>
+              <h2 className="font-semibold">الوصف</h2>
               <p className="text-muted-foreground">{cake.description}</p>
             </div>
 
-            <AddToCartButton
-              cake={cake as Cake}
-              size="lg"
-              className="w-full md:w-auto bg-primary hover:bg-primary/90"
-            />
+            <AddToCartButton cake={cake} size="lg" className="w-full md:w-auto bg-primary hover:bg-primary/90" />
           </div>
         </div>
       </main>

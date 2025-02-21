@@ -1,11 +1,44 @@
 import { query, mutation } from "./_generated/server"
+import { v } from "convex/values"
 
-// Existing query
+// Get all categories
 export const getCategories = query(async ({ db }) => {
   return await db.query("categories").collect()
 })
 
-// Seed mutation
+// Get category by name
+export const getCategoryByName = query({
+  args: { name: v.string() },
+  handler: async ({ db }, { name }) => {
+    const categories = await db
+      .query("categories")
+      .filter((q) => q.eq(q.field("name"), name))
+      .collect()
+
+    return categories[0] || null
+  },
+})
+
+// Get category by slug
+export const getCategoryBySlug = query({
+  args: { slug: v.string() },
+  handler: async ({ db }, { slug }) => {
+    const categories = await db.query("categories").collect()
+
+    return (
+      categories.find(
+        (category) =>
+          category.name
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "") === slug,
+      ) || null
+    )
+  },
+})
+
+// Seed categories
 export const seedCategories = mutation({
   args: {},
   handler: async (ctx) => {

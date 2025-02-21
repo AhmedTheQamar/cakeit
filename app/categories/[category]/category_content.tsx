@@ -8,29 +8,75 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon } from "lucide-react"
 import { Toaster } from "sonner"
 import { notFound } from "next/navigation"
-import { use } from "react"
 
-interface PageProps {
-  params: Promise<{ category: string }>
+interface CategoryContentProps {
+  category: string
 }
 
-export default function CategoryPage({ params }: PageProps) {
-  const { category } = use(params)
+export function CategoryContent({ category }: CategoryContentProps) {
   const categories = useQuery(api.categories.getCategories) || []
   const cakes = useQuery(api.cakes.get) || []
 
-  // Decode the URL parameter to get the original category name
-  const decodedCategory = decodeURIComponent(category)
+  // Helper function to generate consistent slugs
+  const generateSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[\u0621-\u064A]/g, (match) => {
+        const arabicToEnglish: { [key: string]: string } = {
+          أ: "a",
+          ا: "a",
+          إ: "a",
+          آ: "a",
+          ب: "b",
+          ت: "t",
+          ث: "th",
+          ج: "j",
+          ح: "h",
+          خ: "kh",
+          د: "d",
+          ذ: "th",
+          ر: "r",
+          ز: "z",
+          س: "s",
+          ش: "sh",
+          ص: "s",
+          ض: "d",
+          ط: "t",
+          ظ: "z",
+          ع: "a",
+          غ: "gh",
+          ف: "f",
+          ق: "q",
+          ك: "k",
+          ل: "l",
+          م: "m",
+          ن: "n",
+          ه: "h",
+          و: "w",
+          ي: "y",
+          ى: "a",
+          ئ: "e",
+          ء: "e",
+          ؤ: "o",
+          ة: "h",
+        }
+        return arabicToEnglish[match] || match
+      })
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "")
+      .replace(/--+/g, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "")
+  }
 
-  // Find the category by exact name match
-  const categoryData = categories.find((cat) => cat.name === decodedCategory)
+  const categoryData = categories.find((cat) => generateSlug(cat.name) === category)
 
   if (!categoryData) {
     notFound()
   }
 
-  // Filter cakes by exact category name match
-  const filteredCakes = cakes.filter((cake) => cake.category === categoryData.name)
+  const filteredCakes = cakes.filter((cake) => generateSlug(cake.category) === category)
 
   return (
     <div className="min-h-screen bg-background pb-16">
