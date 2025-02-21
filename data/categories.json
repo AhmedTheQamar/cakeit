@@ -1,0 +1,50 @@
+[
+  {
+    "name": "أعياد الميلاد",
+    "icon": "🎂",
+    "href": "/categories/birthday",
+    "description": "مثالي للمناسبات الخاصة"
+  },
+  {
+    "name": "زفاف",
+    "icon": "💒",
+    "href": "/categories/wedding",
+    "description": "كيك احتفالات أنيق"
+  },
+  {
+    "name": "كب كيك",
+    "icon": "🧁",
+    "href": "/categories/cupcakes",
+    "description": "حلويات فردية"
+  },
+  {
+    "name": "تخصيص",
+    "icon": "✨",
+    "href": "/categories/custom",
+    "description": "صنع حسب الطلب"
+  },
+  {
+    "name": "موسمي",
+    "icon": "🍁",
+    "href": "/categories/seasonal",
+    "description": "عروض لفترة محدودة"
+  },
+  {
+    "name": "نباتي",
+    "icon": "🌱",
+    "href": "/categories/vegan",
+    "description": "خيارات نباتية"
+  },
+  {
+    "name": "خالي من الغلوتين",
+    "icon": "🌾",
+    "href": "/categories/gluten-free",
+    "description": "بدائل القمح"
+  },
+  {
+    "name": "أطفال",
+    "icon": "🎈",
+    "href": "/categories/kids",
+    "description": "تصاميم ممتعة"
+  }
+]

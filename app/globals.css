@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    --font-arabic: var(--font-arabic), system-ui, sans-serif;
+
     --background: 40 33% 98%;
     --foreground: 30 24% 20%;
 
@@ -34,6 +36,15 @@
 
     --radius: 0.75rem;
   }
+
+  /* Add support for Arabic numerals and text */
+  html {
+    font-family: var(--font-arabic);
+  }
+
+  .font-arabic {
+    font-feature-settings: "kern", "liga", "calt", "arab";
+  }
 }
 
 @layer base {
@@ -48,6 +59,22 @@
   }
 }
 
+/* RTL-specific animations */
+@keyframes scroll-rtl {
+  from {
+    transform: translateX(calc(-50% - 1rem));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+[dir="rtl"] .animate-scroll {
+  animation: scroll-rtl var(--animation-duration) linear infinite;
+  animation-direction: var(--animation-direction);
+}
+
+/* Original LTR animation (kept for reference) */
 @keyframes scroll {
   from {
     transform: translateX(0);
@@ -60,5 +87,37 @@
 .animate-scroll {
   animation: scroll var(--animation-duration) linear infinite;
   animation-direction: var(--animation-direction);
+}
+
+/* RTL specific utilities */
+[dir="rtl"] {
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Flip icons that need to be mirrored in RTL */
+  .flip-in-rtl {
+    transform: scaleX(-1);
+  }
+
+  /* Adjust text alignment for RTL */
+  .text-start {
+    text-align: right;
+  }
+
+  .text-end {
+    text-align: left;
+  }
+}
+
+/* Arabic typography improvements */
+.arabic-digits {
+  font-variant-numeric: arabic;
+}
+
+.arabic-text {
+  text-align: right;
+  direction: rtl;
+  font-feature-settings: "kern", "liga", "calt", "arab";
 }
 

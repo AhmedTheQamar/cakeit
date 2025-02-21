@@ -17,7 +17,7 @@ export const InfiniteMovingCards = ({
     name: string
     price: number
   }[]
-  direction?: "left" | "right"
+  direction?: "left" | "left"
   speed?: "fast" | "normal" | "slow"
   pauseOnHover?: boolean
   className?: string
@@ -32,7 +32,7 @@ export const InfiniteMovingCards = ({
   }, [])
 
   const speeds = {
-    fast: 30,
+    fast: 40,
     normal: 50,
     slow: 70,
   }

@@ -1,11 +1,13 @@
-import { cakes, categories } from "@/lib/data"
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { CakeCard } from "@/components/cake-card"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon } from "lucide-react"
 import { Toaster } from "sonner"
 import { notFound } from "next/navigation"
-
+const categories = useQuery(api.categories.getCategories) || [];
+const cakes = useQuery(api.cakes.get) || [];
 export async function generateStaticParams() {
   return categories.map((category) => ({
     category: category.name.toLowerCase(),

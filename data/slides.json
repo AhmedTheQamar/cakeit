@@ -1,0 +1,44 @@
+
+ [
+      {
+        "id": 1,
+        "title": "عرض خاص ٥٠٪",
+        "description": "خصم على جميع كعكات الشوكولاتة لفترة محدودة",
+        "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80",
+        "badge": "تخفيض",
+        "color": "bg-red-500",
+        "originalPrice": 199,
+        "discountedPrice": 99.5,
+        "validUntil": "2024-03-01"
+      },
+      {
+        "id": 2,
+        "title": "جديد لدينا",
+        "description": "كعكة الفستق بالزعفران - وصفة خاصة",
+        "image": "https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=800&q=80",
+        "badge": "جديد",
+        "color": "bg-emerald-500",
+        "price": 159
+      },
+      {
+        "id": 3,
+        "title": "عرض نهاية الأسبوع",
+        "description": "اطلب كعكتين واحصل على الثالثة مجاناً",
+        "image": "https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=800&q=80",
+        "badge": "عرض خاص",
+        "color": "bg-blue-500",
+        "validUntil": "2024-02-29"
+      },
+      {
+        "id": 4,
+        "title": "تشكيلة العيد",
+        "description": "كعكات مميزة للاحتفال بالعيد مع العائلة",
+        "image": "https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?w=800&q=80",
+        "badge": "موسمي",
+        "color": "bg-amber-500",
+        "comingSoon": true
+      }
+    ]
+  
+  
+  

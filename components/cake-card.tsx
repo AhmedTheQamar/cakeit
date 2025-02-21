@@ -1,12 +1,21 @@
 "use client"
 
 import { useState } from "react"
-import type { Cake } from "@/lib/data"
 import { useCartStore } from "@/lib/store"
 import { Card, CardContent } from "@/components/ui/card"
 import { LoadingButton } from "@/components/loading-button"
 import Image from "next/image"
 import { toast } from "sonner"
+import type { Id } from "@/convex/_generated/dataModel"
+
+export interface Cake {
+  _id: Id<"cakes">
+  name: string
+  price: number
+  category: string
+  image?: string
+  description: string
+}
 
 export function CakeCard({ cake }: { cake: Cake }) {
   const [isLoading, setIsLoading] = useState(false)
@@ -42,7 +51,7 @@ export function CakeCard({ cake }: { cake: Cake }) {
           <h3 className="font-semibold text-sm">{cake.name}</h3>
           <p className="text-xs text-accent">{cake.category}</p>
           <div className="flex items-center justify-between mt-2">
-            <span className="font-bold text-sm text-secondary">${cake.price}</span>
+            <span className="font-bold text-sm text-secondary">${cake.price.toFixed(2)}</span>
             <LoadingButton
               size="sm"
               className="h-8 text-xs bg-primary hover:bg-primary/90"
